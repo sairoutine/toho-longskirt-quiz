@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp build",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -15,6 +17,17 @@
     "morgan": "~1.6.1",
     "node-pixiv": "^0.1.1",
     "request": "^2.67.0",
+    "mithril": "^0.2.2-rc.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
+    "gulp-msx": "^0.4.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-uglify": "^1.5.1",
+    "gulp-watch": "^4.3.5",
+    "run-sequence": "^1.1.5",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
