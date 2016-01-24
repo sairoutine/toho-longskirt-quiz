@@ -1,19 +1,54 @@
 var m = require('mithril');
 
-//カウンター
-var counter = 0;
+var Question = function() {
+	return m.request({method: "GET", url: "/question"});
+};
 
-//タイマーでカウントアップ
-setInterval(function () {
-    counter++;
-    m.redraw(true);
-}, 1000);
 
-//ビュー
-function view() {
-	return <a href="#">count: {counter}</a>;
-}
+var Introduction = {
+	controller: function() {},
+	view: function() {
+		return <div>
+			Pixivの東方プロジェクトの絵がランダムに表示されます。<br />
+			タグに「ロングスカート」がついているか当ててみましょう。<br />
+			<a href="/start" config={m.route}>Start</a>
+		</div>;
+	}
+};
 
-//HTML要素にコンポーネントをマウント
-m.mount(document.body, {view: view});
+var Start = {
+	controller: function() {
+		this.model = new Question();
+	},
+	view: function(ctrl) {
+		this.answer = function(e) {
+			e.preventDefault();
 
+			var user_answer = e.target.getAttribute('data');
+			var is_long_skirt = ctrl.model().is_long_skirt;
+			if(is_long_skirt == user_answer){
+				alert('正解');
+			}
+			else{
+				alert('不正解');
+			}
+			m.route('/start');
+		};
+
+		return <div>
+			ロングスカートタグが<br />
+			<a onclick={this.answer} href="#" data="1">ついている</a>　
+			<a onclick={this.answer} href="#" data="0">ついていない</a><br />
+			<br />
+			<img src={ "/image?url=" + ctrl.model().illust_url  } /><br />
+		</div>;
+	},
+
+};
+
+
+
+m.route(document.getElementById("root"), "/", {
+	"/": Introduction,
+	"/start": Start,
+});
