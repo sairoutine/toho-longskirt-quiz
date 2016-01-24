@@ -26,11 +26,14 @@ var Start = {
 
 			var user_answer = e.target.getAttribute('data');
 			var is_long_skirt = ctrl.model().is_long_skirt;
-			if(is_long_skirt == user_answer){
-				alert('正解');
+
+			var answer = is_long_skirt == user_answer ? "正解" : "不正解";
+
+			if(is_long_skirt){
+				alert(answer + '：ロングスカートタグがついてました');
 			}
 			else{
-				alert('不正解');
+				alert(answer + '：ロングスカートタグはついてません');
 			}
 			m.route('/start');
 		};
