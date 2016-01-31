@@ -21,7 +21,7 @@ var Start = {
 		this.model = new Question();
 	},
 	view: function(ctrl) {
-		this.answer = function(e) {
+		var answer = function(e) {
 			e.preventDefault();
 
 			var user_answer = e.target.getAttribute('data');
@@ -40,8 +40,8 @@ var Start = {
 
 		return <div>
 			ロングスカートタグが<br />
-			<a onclick={this.answer} href="#" data="1">ついている</a>　
-			<a onclick={this.answer} href="#" data="0">ついていない</a><br />
+			<a onclick={answer} href="#" data="1">ついている</a>　
+			<a onclick={answer} href="#" data="0">ついていない</a><br />
 			<br />
 			<img src={ "/image?url=" + ctrl.model().illust_url  } /><br />
 		</div>;
