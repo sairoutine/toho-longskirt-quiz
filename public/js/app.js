@@ -6,12 +6,23 @@ var Question = function() {
 
 
 var Introduction = {
-	controller: function() {},
-	view: function() {
+	controller: function() {
+		this.loading = m.prop();	
+	},
+	view: function(ctrl) {
+		var start = function(e) {
+			e.preventDefault();
+
+			ctrl.loading("Now Loading...");
+
+			setTimeout(function(){ m.route('/start');  },1);
+		};
+
 		return {tag: "div", attrs: {}, children: [
 			"Pixivの東方プロジェクトの絵がランダムに表示されます。", {tag: "br", attrs: {}}, 
 			"タグに「ロングスカート」がついているか当ててみましょう。", {tag: "br", attrs: {}}, 
-			{tag: "a", attrs: {href:"/start", config:m.route}, children: ["Start"]}
+			{tag: "a", attrs: {href:"#", onclick:start, data:"10"}, children: ["Start"]}, 
+			{tag: "div", attrs: {}, children: [ ctrl.loading(), " "]}
 		]};
 	}
 };
@@ -19,9 +30,10 @@ var Introduction = {
 var Start = {
 	controller: function() {
 		this.model = new Question();
+		this.loading = m.prop();	
 	},
 	view: function(ctrl) {
-		this.answer = function(e) {
+		var answer = function(e) {
 			e.preventDefault();
 
 			var user_answer = e.target.getAttribute('data');
@@ -35,13 +47,18 @@ var Start = {
 			else{
 				alert(answer + '：ロングスカートタグはついてません');
 			}
-			m.route('/start');
+			ctrl.loading("Now Loading...");
+
+			setTimeout(function(){
+				m.route('/start');
+			},1);
 		};
 
 		return {tag: "div", attrs: {}, children: [
 			"ロングスカートタグが", {tag: "br", attrs: {}}, 
-			{tag: "a", attrs: {onclick:this.answer, href:"#", data:"1"}, children: ["ついている"]}, "　", 
-			{tag: "a", attrs: {onclick:this.answer, href:"#", data:"0"}, children: ["ついていない"]}, {tag: "br", attrs: {}}, 
+			{tag: "a", attrs: {onclick:answer, href:"#", data:"1"}, children: ["ついている"]}, "　", 
+			{tag: "a", attrs: {onclick:answer, href:"#", data:"0"}, children: ["ついていない"]}, {tag: "br", attrs: {}}, 
+			{tag: "div", attrs: {}, children: [ ctrl.loading(), " "]}, 
 			{tag: "br", attrs: {}}, 
 			{tag: "img", attrs: {src: "/image?url=" + ctrl.model().illust_url}}, {tag: "br", attrs: {}}
 		]};
