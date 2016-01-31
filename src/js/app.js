@@ -6,12 +6,23 @@ var Question = function() {
 
 
 var Introduction = {
-	controller: function() {},
-	view: function() {
+	controller: function() {
+		this.loading = m.prop();	
+	},
+	view: function(ctrl) {
+		var start = function(e) {
+			e.preventDefault();
+
+			ctrl.loading("Now Loading...");
+
+			setTimeout(function(){ m.route('/start');  },1);
+		};
+
 		return <div>
 			Pixivの東方プロジェクトの絵がランダムに表示されます。<br />
 			タグに「ロングスカート」がついているか当ててみましょう。<br />
-			<a href="/start" config={m.route}>Start</a>
+			<a href="#" onclick={start} data="10">Start</a>
+			<div>{ ctrl.loading() } </div>
 		</div>;
 	}
 };
@@ -19,6 +30,7 @@ var Introduction = {
 var Start = {
 	controller: function() {
 		this.model = new Question();
+		this.loading = m.prop();	
 	},
 	view: function(ctrl) {
 		var answer = function(e) {
@@ -35,13 +47,18 @@ var Start = {
 			else{
 				alert(answer + '：ロングスカートタグはついてません');
 			}
-			m.route('/start');
+			ctrl.loading("Now Loading...");
+
+			setTimeout(function(){
+				m.route('/start');
+			},1);
 		};
 
 		return <div>
 			ロングスカートタグが<br />
 			<a onclick={answer} href="#" data="1">ついている</a>　
 			<a onclick={answer} href="#" data="0">ついていない</a><br />
+			<div>{ ctrl.loading() }&nbsp;</div>
 			<br />
 			<img src={ "/image?url=" + ctrl.model().illust_url  } /><br />
 		</div>;
